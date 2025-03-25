@@ -25,7 +25,7 @@ export default {
         {
           quantity: 1,
           price_data: {
-            currency: "usd",
+            currency: "eur",
             product_data: { name: "Website Plan" },
             recurring: { interval: "month" },
             unit_amount: Math.round(Number(amount) * 100),

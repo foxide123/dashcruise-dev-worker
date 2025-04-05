@@ -2,6 +2,7 @@ import Stripe from "stripe";
 
 type StripeParams = {
 	amount: string;
+  currency: string;
 }
 
 export default {
@@ -10,7 +11,7 @@ export default {
       return new Response("Method not allowed", { status: 405 });
     }
 
-    const { amount } = (await request.json()) as StripeParams;
+    const { amount, currency } = (await request.json()) as StripeParams;
 
 	const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 		//eslint-disable-next-line
@@ -21,11 +22,12 @@ export default {
       mode: "subscription",
       success_url: "https://dashcruisedev.com",
       cancel_url: "https://dashcruisedev.com",
+      allow_promotion_codes: true,
       line_items: [
         {
           quantity: 1,
           price_data: {
-            currency: "eur",
+            currency: currency,
             product_data: { name: "Website Plan" },
             recurring: { interval: "month" },
             unit_amount: Math.round(Number(amount) * 100),

@@ -1,8 +1,11 @@
 import Stripe from "stripe";
 
+type StripeLocale = 'auto' | 'en' | 'de';
+
 type StripeParams = {
 	amount: string;
   currency: string;
+  language: StripeLocale;
 }
 
 export default {
@@ -11,7 +14,7 @@ export default {
       return new Response("Method not allowed", { status: 405 });
     }
 
-    const { amount, currency } = (await request.json()) as StripeParams;
+    const { amount, currency, language } = (await request.json()) as StripeParams;
 
 	const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 		//eslint-disable-next-line
@@ -20,9 +23,10 @@ export default {
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
-      success_url: "https://dashcruisedev.com",
-      cancel_url: "https://dashcruisedev.com",
+      success_url: "https://dashcruisedev.com/en",
+      cancel_url: "https://dashcruisedev.com/en",
       allow_promotion_codes: true,
+      locale: language,
       line_items: [
         {
           quantity: 1,

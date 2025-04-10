@@ -6,6 +6,7 @@ type StripeParams = {
 	amount: string;
   currency: string;
   language: StripeLocale;
+  planName: string;
 }
 
 export default {
@@ -14,7 +15,7 @@ export default {
       return new Response("Method not allowed", { status: 405 });
     }
 
-    const { amount, currency, language } = (await request.json()) as StripeParams;
+    const { amount, currency, language, planName } = (await request.json()) as StripeParams;
 
 	const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
 		//eslint-disable-next-line
@@ -40,6 +41,9 @@ export default {
           },
         },
       ],
+      metadata: {
+        plan: planName
+      }
     });
 
     return Response.json({ sessionId: session.id });

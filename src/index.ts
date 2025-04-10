@@ -28,8 +28,6 @@ export default {
       cancel_url: "https://dashcruisedev.com/en",
       allow_promotion_codes: true,
       locale: language,
-      //important !!! ensures customer is created in the Stripe system
-      customer_creation: 'always',
       line_items: [
         {
           quantity: 1,
